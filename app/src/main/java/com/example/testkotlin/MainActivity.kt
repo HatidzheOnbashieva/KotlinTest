@@ -141,4 +141,8 @@ class MainActivity : AppCompatActivity() {
         println(getGreeting())
     }
 
+    fun hello3() {
+        println(getGreeting())
+    }
+
 }
