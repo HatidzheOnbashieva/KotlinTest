@@ -125,6 +125,7 @@ class MainActivity : AppCompatActivity() {
             printAll(*entries)                                             // 5
         }
 
+
     }
 
     fun getGreeting(): String {
@@ -133,6 +134,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun hello() {
+        println(getGreeting())
+    }
+
+    fun hello2() {
         println(getGreeting())
     }
 
