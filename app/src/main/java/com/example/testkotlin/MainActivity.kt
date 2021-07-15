@@ -127,9 +127,6 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-
-    //fun String getGreet(value: String) = "Hello there"
-
     fun getGreeting(): String {
 
         return "Hello Kotlin"
