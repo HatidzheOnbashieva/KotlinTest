@@ -36,6 +36,9 @@ class MainActivity : AppCompatActivity() {
         println(getGreeting())
         hello()
 
+        println(labelMultiply(3,4,))
+        println(labelMultiply(label ="The result is:", operand2 = 4, operand1 = 3)) //once you put a parameter out of order you should use names for all of the other ones; it is a good practise to write your function with name parameters even if we don't use the parameters out of order
+
         val newTopLevelName1: Int? = topLevelNullname?.length;
         println("The length of topLevelName(with the default value) is $newTopLevelName1")
 
@@ -213,13 +216,38 @@ class MainActivity : AppCompatActivity() {
 
 
 
-        val person = Person("Ivan")
+        val person = Person("Ivan", "Petrov")
+        val car1 = Car("blue", "Toyota", 2015)
+        val car2 = Car("blue", "Toyota", 2015)
         //person.firstname is known as property access syntax; in Kotlin we can directly reference properties by their name without worrying about a getter or setter
         println("\nFirst name of my Person: ${person.firstname}")
+        println(person.lastName)
+        person.lastName = "Dimitrov"
         println(person)
+        println(person.firstNameToUpper()) //this is how a function is being called with () brackets as in Java
 
-        val person2 = Person("John")
-        val person3 = Person("John")
+
+        println(car1)
+        println(car1 == car2) // I haven't overridden the equals method in the data class, however it is already overridden; will be true
+        val car3 = car1.copy()
+        println(car3)
+        val car4 = car1.copy(year=2016, color = "green") // the names used here should match the property names
+        println(car4)
+        printColorsWithString("Colors:", car1, car2, car3, car4)
+        printColors(car1, car2, car3, car4)
+
+        val colors = arrayOf(car1, car2)
+        printColors(*colors) // this is the spread operator "*"; this operator is unpacking the array the passing the elements as individual arguments
+
+        val moreCars = arrayOf(car3, car4)
+        val car5 = car1.copy()
+        val lotsOfCars = arrayOf(*colors,*moreCars,car5) //another use of the spread operator; when we want to unpack the individual elements of an array rather than using the array itself
+        for(car in lotsOfCars)
+            println(car)
+
+
+        val person2 = Person("John", "Adams")
+        val person3 = Person("John", "Adams")
         val person4 = person3
 
         println("$person === $person2: ${person === person2}") //false
@@ -269,6 +297,63 @@ class MainActivity : AppCompatActivity() {
         }
 
 
+        val lowerCaseText = "this is in lowercase"
+        println(lowerCaseText.upperFirstAndLastLetter())
+
+        val laserPrinter = LaserPrinter("LaserPrinter2342", 15)
+        laserPrinter.printModel()
+        laserPrinter.bestSellingPrice()
+
+
+        val lambda: (param1:String) -> Int
+        lambda ={param1: String ->
+            0 // no need for return operator
+        }
+
+       val value = lambda("123")
+        println(value)
+
+        //anonymous functions; they are not part if the classes;declaration is completely the same as functions; the memory allocated....
+
+        val anonymousVar = fun(param1:String):Int{
+            return param1.toInt()
+        }
+
+        val value2 = anonymousVar("234")
+        println(value2)
+
+        val converter = {value:String -> value.toInt()}
+        val secondConverter = {
+                value:String -> value.toFloat().toDouble().toInt()
+        }
+//        doConvert("123", converter)
+//
+//        doConvert("123", secondConverter)
+//
+//        doConvert("123") {
+//            it.toInt()
+//        }
+
+        doConvert("123", converter)
+
+        val test = Test()
+        println(test.anotherName)
+        test.anotherName = "New another name set"
+        println(test.anotherName)
+        println(test.name)
+        println(test.another)
+    }
+
+    fun doConvert(value:String, converter:(String) -> Int) //receives another functions as a parameter; higher order implementation
+    {
+        val convertedValue = converter(value)
+        println(convertedValue)
+    }
+
+    fun doConvert2(value:String, converter:String.(String) -> Int)
+    {
+        val convertedValue = "s".converter(value)
+        println(convertedValue)
     }
 
     fun getGreeting(): String {
@@ -279,4 +364,37 @@ class MainActivity : AppCompatActivity() {
     fun hello() {
         println(getGreeting())
     }
+
+    fun labelMultiply(operand1:Int, operand2:Int,label:String = "The answer is:") = "$label ${operand1 * operand2}" //this is called a function with expression body
+    //fun labelMultiply(operand1:Int, operand2:Int,label = "The answer is:") = "$label ${operand1 * operand2}" //this line of code is giving errors because when it comes to functions e always should include the type!!
+
+
+    //all of the below declarations are valid declarations for functions
+
+    //fun labelMultiply(operand1:Int, operand2:Int,label:String): String = "$label ${operand1 * operand2}"
+
+    /*fun labelMultiply(operand1:Int, operand2:Int,label:String):String //this called a function with a block body; it is doing a little bit more; more than one line in it
+    {
+        return ("$label ${operand1 * operand2}")
+    }*/
+
+    fun printColorsWithString(str: String, vararg cars: Car) // you can have only one vararg parameter in function signature; multiple vararg parameters are prohibited
+    {
+        for (car in cars)
+            println(car.color)
+    }
+
+    fun printColors(vararg cars: Car) // you can have only one vararg parameter in function signature; multiple vararg parameters are prohibited
+    {
+        for (car in cars)
+            println(car.color)
+    }
+
+    //extension function; usually in Java these kind of functions are stored in the Util class; here it looks like as if this function is belonging to the String class
+    fun String.upperFirstAndLastLetter():String{
+        //val upperFirst = this.substring(0,1).toUpperCase() + this.substring(1)
+        val upperFirst = substring(0,1).toUpperCase() + substring(1) // we can also remove the this
+        return upperFirst.substring(0, upperFirst.length - 1) + upperFirst.substring(upperFirst.length - 1, upperFirst.length).toUpperCase() //a function that sets the first and last letter in UpperCase
+    }
+
 }
