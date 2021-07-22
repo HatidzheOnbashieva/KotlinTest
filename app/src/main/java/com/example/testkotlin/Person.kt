@@ -1,5 +1,12 @@
 package com.example.testkotlin
 
+class Car2(val color: String, val model: String, val year:Int) {
+    operator fun component1() = color
+    operator fun component2() = model
+    operator fun component3() = year
+
+}
+
 data class Car(val color: String, val model: String, val year:Int) {
     //a custom implementation of the equals and hash-code functions and copy functions; if we don't want the default implementation we can override these functions and our version of that function will be used
     //all the primary constructor parameters should be declared val or var; they can't be abstract, sealed or inner classes

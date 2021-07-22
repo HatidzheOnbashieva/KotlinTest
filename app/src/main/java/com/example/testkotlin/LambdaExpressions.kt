@@ -18,6 +18,17 @@ fun main() {
     run(::topLevel)
 
     println(countTo100())
+
+    findByLastName(employees,"Jones")
+    findByLastName(employees,"Smithson")
+
+    //
+    "Some String".apply someString@ {
+        "Another String".apply{
+            println(toLowerCase()) //toLowerCase() is applicable only for "Another String"
+            println(this@someString.toUpperCase()) //we label the outer apply so we this way we are using the "Some String" expression to make it upperCase
+        }
+    }
 }
 
 fun topLevel() = println("I am in a function!")
@@ -27,6 +38,16 @@ fun useParameter(employees: List<Employee>, num: Int) {
         println(it.firstName)
         println(num)
     }
+}
+
+fun findByLastName(employees: List<Employee>, lastName: String) {
+    employees.forEach returnBlock@{
+        if (it.lastName == lastName) {
+            println("Yes, there is an employee with the last name $lastName")
+            return@returnBlock //the return is a local return now; it returns from the forEach lambda but not return from the function; we will see the nope line printed too
+        }
+    }
+    println("No, there is no employee with the last name $lastName")
 }
 
 // this is the more concise way of writing this function using with; Receiver object
@@ -52,6 +73,7 @@ fun countTo100() =
         append(100)
 
     }.toString()
+
 
 /*fun countTo100(): String{
     val numbers = StringBuilder()
